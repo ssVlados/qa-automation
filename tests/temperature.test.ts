@@ -25,3 +25,4 @@ describe('celsiusToFahrenheit', () => {
     expect(() => celsiusToFahrenheit(NaN)).toThrow('INVALID_TEMPERATURE');
   });
 });
+
