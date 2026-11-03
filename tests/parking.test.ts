@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calcParkingFee } from '../src/parking';
+import { calcParkingFee, round2 } from '../src/parking';
 
 describe('calcParkingFee', () => {
   it.each([-1, -60, 10.5])('відхиляє тривалість %s', (minutes) => {
@@ -49,4 +49,14 @@ describe('calcParkingFee', () => {
       expect(result).toBeCloseTo(expected, 2);
     },
   );
+});
+
+describe('round2', () => {
+  it('прибирає похибку float: 0.1 + 0.2', () => {
+    expect(round2(0.1 + 0.2)).toBe(0.3);
+  });
+
+  it('заокруглює до двох знаків: 1.005 * 100', () => {
+    expect(round2(1.005 * 100)).toBe(100.5);
+  });
 });
