@@ -38,4 +38,15 @@ describe('calcParkingFee', () => {
   ])('нічний тариф: $minutes → $expected', ({ minutes, expected }) => {
     expect(calcParkingFee(minutes, { night: true })).toBeCloseTo(expected, 2);
   });
+
+  it.each([
+    { minutes: 600, night: false, expected: 160 },
+    { minutes: 600, night: true, expected: 80 },
+  ])(
+    'вихідний: $minutes хв, night=$night → $expected',
+    ({ minutes, night, expected }) => {
+      const result = calcParkingFee(minutes, { weekend: true, night });
+      expect(result).toBeCloseTo(expected, 2);
+    },
+  );
 });
