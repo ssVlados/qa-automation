@@ -22,4 +22,12 @@ describe('calcRental', () => {
   ])('знижка 10% від 7 діб: $days → $rent', ({ days, rent }) => {
     expect(calcRental(days).rent).toBeCloseTo(rent, 2);
   });
+
+  it.each([
+    { days: 29, rent: 20880 },
+    { days: 30, rent: 18000 },
+    { days: 31, rent: 18600 },
+  ])('знижка 25% від 30 діб: $days → $rent', ({ days, rent }) => {
+    expect(calcRental(days).rent).toBeCloseTo(rent, 2);
+  });
 });
