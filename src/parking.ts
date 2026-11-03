@@ -8,6 +8,8 @@ const FIRST_HOUR_FEE = 30;
 const EXTRA_HOUR_FEE = 20;
 const DAILY_CAP = 200;
 
+export const round2 = (n: number): number => Math.round(n * 100) / 100;
+
 export function calcParkingFee(
   minutes: number,
   options: ParkingOptions = {},
@@ -28,5 +30,5 @@ export function calcParkingFee(
 
   if (options.night) fee = fee / 2;
   if (options.weekend) fee = fee * 0.8;
-  return fee;
+  return round2(fee);
 }
