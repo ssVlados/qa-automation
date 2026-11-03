@@ -7,5 +7,8 @@ export function calcParkingFee(
   minutes: number,
   options: ParkingOptions = {},
 ): number {
-  throw new Error('INVALID_DURATION');
+  if (!Number.isInteger(minutes) || minutes < 0) {
+    throw new Error('INVALID_DURATION');
+  }
+  return 0;
 }
