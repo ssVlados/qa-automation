@@ -73,6 +73,11 @@ describe('OrderService — заглушки й шпигуни', () => {
     expect(notifier.send).not.toHaveBeenCalled();
   });
 
+  it('зберігає замовлення одним викликом (взаємодія)', async () => {
+    await service.placeOrder({ id: 'A-7', amountUsd: 10, email: 'u@e.com' });
+    expect(repo.save).toHaveBeenCalledTimes(1);
+  });
+
   describe('фіксація часу', () => {
     beforeEach(() => {
       vi.useFakeTimers();
