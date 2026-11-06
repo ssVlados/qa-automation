@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Orders API" tests="7" time="0.055">
+  <testsuite name="Login" id="7050df47-76c1-43ef-9ae2-eef998dfc5bb" timestamp="2026-11-06T20:46:05.187Z" tests="2" failures="0" errors="0" time="0.036">
+    <testcase name="статус 200" time="0.036" classname="Login"/>
+    <testcase name="є accessToken" time="0.036" classname="Login"/>
+  </testsuite>
+  <testsuite name="Create order" id="6ad9ee23-ec72-4018-843e-38aeee0d35f1" timestamp="2026-11-06T20:46:05.187Z" tests="3" failures="0" errors="0" time="0.005">
+    <testcase name="статус 201" time="0.005" classname="CreateOrder"/>
+    <testcase name="total = 560" time="0.005" classname="CreateOrder"/>
+    <testcase name="немає ownerId" time="0.005" classname="CreateOrder"/>
+  </testsuite>
+  <testsuite name="Get order" id="2bae0977-8b1a-439a-afed-342c3ca22f7e" timestamp="2026-11-06T20:46:05.187Z" tests="2" failures="0" errors="0" time="0.002">
+    <testcase name="статус 200" time="0.002" classname="GetOrder"/>
+    <testcase name="id збігається" time="0.002" classname="GetOrder"/>
+  </testsuite>
+  <testsuite name="Create order with Idempotency-Key" id="e317510a-b78a-4ad2-b5b8-df99d92fd72e" timestamp="2026-11-06T20:46:05.187Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="статус 201" time="0.003" classname="CreateOrderWithIdempotencyKey"/>
+    <testcase name="немає заголовка Replayed" time="0.003" classname="CreateOrderWithIdempotencyKey"/>
+  </testsuite>
+  <testsuite name="Repeat with same Idempotency-Key" id="341a3e0b-c3cf-4418-bc22-ecc9ef8c28fb" timestamp="2026-11-06T20:46:05.187Z" tests="3" failures="0" errors="0" time="0.003">
+    <testcase name="статус 200" time="0.003" classname="RepeatWithSameIdempotencyKey"/>
+    <testcase name="той самий id" time="0.003" classname="RepeatWithSameIdempotencyKey"/>
+    <testcase name="Idempotency-Replayed: true" time="0.003" classname="RepeatWithSameIdempotencyKey"/>
+  </testsuite>
+  <testsuite name="Same key, different payload" id="48c3ffa8-4619-4118-945f-84194f8208fd" timestamp="2026-11-06T20:46:05.187Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="статус 422" time="0.003" classname="SameKeyDifferentPayload"/>
+    <testcase name="код конфлікту" time="0.003" classname="SameKeyDifferentPayload"/>
+  </testsuite>
+  <testsuite name="Delete order" id="85f1cb0c-3919-4b90-854e-7c12243aaa90" timestamp="2026-11-06T20:46:05.187Z" tests="1" failures="0" errors="0" time="0.003">
+    <testcase name="статус 204" time="0.003" classname="DeleteOrder"/>
+  </testsuite>
+</testsuites>
