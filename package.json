@@ -7,7 +7,8 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start": "tsx src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,12 +16,22 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",
+    "@types/supertest": "^7.2.1",
     "@vitest/coverage-v8": "^4.1.12",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "eslint": "^10.13.0",
+    "newman": "^6.2.3",
     "prettier": "^3.9.10",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.0",
     "vitest": "^4.1.12"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
   }
 }
