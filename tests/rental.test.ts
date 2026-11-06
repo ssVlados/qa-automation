@@ -40,4 +40,10 @@ describe('calcRental', () => {
     expect(result.deposit).toBe(2000);
     expect(result.total).toBeCloseTo(total, 2);
   });
+
+  it.each([1, 7, 30])('застава повертається повністю: %i діб', (days) => {
+    const result = calcRental(days);
+    expect(result.depositRefund).toBe(2000);
+    expect(result.total - result.depositRefund).toBeCloseTo(result.rent, 2);
+  });
 });
