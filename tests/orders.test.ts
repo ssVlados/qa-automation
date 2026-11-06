@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app';
 import { login, makeOrderPayload } from './helpers';
+import { expectSchema } from './schema';
+import { orderSchema } from './schemas/order.schema';
 
 describe('POST /orders', () => {
   let app: ReturnType<typeof createApp>;
@@ -62,5 +64,14 @@ describe('POST /orders', () => {
 
     expect(res.status).toBe(400);
     expect(res.body.code).toBe(code);
+  });
+
+  it('відповідь POST /orders відповідає контракту', async () => {
+    const res = await request(app)
+      .post('/orders')
+      .set('Authorization', `Bearer ${token}`)
+      .send(makeOrderPayload());
+
+    expectSchema(res.body, orderSchema);
   });
 });
