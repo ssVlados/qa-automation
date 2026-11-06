@@ -1,4 +1,5 @@
 const DAY_PRICE = 800;
+const DEPOSIT = 2000;
 
 const DISCOUNT_TIERS = [
   { fromDays: 30, rate: 0.25 },
@@ -10,9 +11,14 @@ function calcDiscountRate(days: number): number {
   return tier ? tier.rate : 0;
 }
 
-export function calcRental(days: number): { rent: number } {
+export function calcRental(days: number): {
+  rent: number;
+  deposit: number;
+  total: number;
+} {
   if (!Number.isInteger(days) || days < 1) {
     throw new Error('INVALID_DAYS');
   }
-  return { rent: days * DAY_PRICE * (1 - calcDiscountRate(days)) };
+  const rent = days * DAY_PRICE * (1 - calcDiscountRate(days));
+  return { rent, deposit: DEPOSIT, total: rent + DEPOSIT };
 }
