@@ -30,4 +30,14 @@ describe('calcRental', () => {
   ])('знижка 25% від 30 діб: $days → $rent', ({ days, rent }) => {
     expect(calcRental(days).rent).toBeCloseTo(rent, 2);
   });
+
+  it.each([
+    { days: 1, total: 2800 },
+    { days: 7, total: 7040 },
+    { days: 30, total: 20000 },
+  ])('до сплати з заставою: $days → $total', ({ days, total }) => {
+    const result = calcRental(days);
+    expect(result.deposit).toBe(2000);
+    expect(result.total).toBeCloseTo(total, 2);
+  });
 });
