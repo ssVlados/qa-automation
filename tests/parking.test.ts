@@ -1,0 +1,62 @@
+import { describe, it, expect } from 'vitest';
+import { calcParkingFee, round2 } from '../src/parking';
+
+describe('calcParkingFee', () => {
+  it.each([-1, -60, 10.5])('відхиляє тривалість %s', (minutes) => {
+    expect(() => calcParkingFee(minutes)).toThrow('INVALID_DURATION');
+  });
+
+  it.each([0, 1, 15])('перші 15 хвилин безкоштовні: %i', (minutes) => {
+    expect(calcParkingFee(minutes)).toBe(0);
+  });
+
+  it.each([16, 30, 60])('перша година коштує 30 грн: %i', (minutes) => {
+    expect(calcParkingFee(minutes)).toBe(30);
+  });
+
+  it.each([
+    { minutes: 61, expected: 50 },
+    { minutes: 120, expected: 50 },
+    { minutes: 121, expected: 70 },
+    { minutes: 180, expected: 70 },
+  ])('тривалість $minutes → $expected', ({ minutes, expected }) => {
+    expect(calcParkingFee(minutes)).toBe(expected);
+  });
+
+  it.each([
+    { minutes: 540, expected: 190 },
+    { minutes: 600, expected: 200 },
+    { minutes: 1440, expected: 200 },
+  ])('максимум за добу: $minutes → $expected', ({ minutes, expected }) => {
+    expect(calcParkingFee(minutes)).toBe(expected);
+  });
+
+  it.each([
+    { minutes: 60, expected: 15 },
+    { minutes: 121, expected: 35 },
+    { minutes: 600, expected: 100 },
+  ])('нічний тариф: $minutes → $expected', ({ minutes, expected }) => {
+    expect(calcParkingFee(minutes, { night: true })).toBeCloseTo(expected, 2);
+  });
+
+  it.each([
+    { minutes: 600, night: false, expected: 160 },
+    { minutes: 600, night: true, expected: 80 },
+  ])(
+    'вихідний: $minutes хв, night=$night → $expected',
+    ({ minutes, night, expected }) => {
+      const result = calcParkingFee(minutes, { weekend: true, night });
+      expect(result).toBeCloseTo(expected, 2);
+    },
+  );
+});
+
+describe('round2', () => {
+  it('прибирає похибку float: 0.1 + 0.2', () => {
+    expect(round2(0.1 + 0.2)).toBe(0.3);
+  });
+
+  it('заокруглює до двох знаків: 1.005 * 100', () => {
+    expect(round2(1.005 * 100)).toBe(100.5);
+  });
+});
