@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Orders API" tests="4" time="0.048">
+  <testsuite name="Login" id="ff5aa41a-c6f5-4740-a9a7-492cbf499a0b" timestamp="2026-11-06T20:38:57.376Z" tests="2" failures="0" errors="0" time="0.039">
+    <testcase name="статус 200" time="0.039" classname="Login"/>
+    <testcase name="є accessToken" time="0.039" classname="Login"/>
+  </testsuite>
+  <testsuite name="Create order" id="0ee55ee5-66fb-4726-8559-6f89b4f9726b" timestamp="2026-11-06T20:38:57.376Z" tests="3" failures="0" errors="0" time="0.004">
+    <testcase name="статус 201" time="0.004" classname="CreateOrder"/>
+    <testcase name="total = 560" time="0.004" classname="CreateOrder"/>
+    <testcase name="немає ownerId" time="0.004" classname="CreateOrder"/>
+  </testsuite>
+  <testsuite name="Get order" id="a225852a-d4cd-4bfd-a95c-2f81f75702f9" timestamp="2026-11-06T20:38:57.376Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="статус 200" time="0.003" classname="GetOrder"/>
+    <testcase name="id збігається" time="0.003" classname="GetOrder"/>
+  </testsuite>
+  <testsuite name="Delete order" id="1390c413-dc73-4cca-8b10-2937cfac3a87" timestamp="2026-11-06T20:38:57.376Z" tests="1" failures="0" errors="0" time="0.002">
+    <testcase name="статус 204" time="0.002" classname="DeleteOrder"/>
+  </testsuite>
+</testsuites>
