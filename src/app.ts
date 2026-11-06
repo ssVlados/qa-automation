@@ -49,6 +49,10 @@ export function createApp() {
 
   const tokens = new Map<string, string>();
   const orders = new Map<string, Order>();
+  const idempotency = new Map<
+    string,
+    { fingerprint: string; orderId: string }
+  >();
 
   app.post('/auth/login', (req, res) => {
     const user = USERS.find(
@@ -69,6 +73,14 @@ export function createApp() {
   });
 
   app.post('/orders', (req, res) => {
+    const rawKey = req.header('Idempotency-Key');
+    let key: string | undefined;
+    if (rawKey !== undefined) {
+      key = rawKey.trim();
+      if (key === '' || key.length > 64) {
+        return res.status(400).json({ code: 'INVALID_IDEMPOTENCY_KEY' });
+      }
+    }
     const items: Item[] = req.body?.items;
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ code: 'EMPTY_ORDER' });
@@ -80,6 +92,22 @@ export function createApp() {
         return res.status(400).json({ code: 'INVALID_QTY' });
     }
     const user = res.locals.user;
+    const storageKey = key === undefined ? undefined : `${user.id}:${key}`;
+    const fingerprint = JSON.stringify(items);
+    if (storageKey !== undefined) {
+      const saved = idempotency.get(storageKey);
+      const existing = saved && orders.get(saved.orderId);
+      if (saved && existing) {
+        if (saved.fingerprint !== fingerprint) {
+          return res.status(422).json({ code: 'IDEMPOTENCY_KEY_CONFLICT' });
+        }
+        return res
+          .status(200)
+          .location(`/orders/${existing.id}`)
+          .set('Idempotency-Replayed', 'true')
+          .json(toPublic(existing));
+      }
+    }
     const subtotal = round2(items.reduce((s, i) => s + i.price * i.qty, 0));
     let rate = DISCOUNT[user.tier as Tier];
     if (subtotal >= 2000) rate += 0.05;
@@ -95,6 +123,9 @@ export function createApp() {
       createdAt: new Date().toISOString(),
     };
     orders.set(order.id, order);
+    if (storageKey !== undefined) {
+      idempotency.set(storageKey, { fingerprint, orderId: order.id });
+    }
     res.status(201).location(`/orders/${order.id}`).json(toPublic(order));
   });
 
